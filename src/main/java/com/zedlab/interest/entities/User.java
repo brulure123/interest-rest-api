@@ -8,7 +8,14 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "users")
+@Entity(name = "User")
+@Table(
+        name = "user",
+        uniqueConstraints = {
+                @UniqueConstraint(name = "user_pseudo_unique", columnNames = "userPseudo"),
+                @UniqueConstraint(name = "user_email_unique", columnNames = "userEmail")
+        }
+)
 public class User implements Serializable {
 
     @Id
@@ -19,13 +26,13 @@ public class User implements Serializable {
     @Column(name = "userName", nullable = false)
     private String userName;
 
-    @Column(name = "userPseudo", nullable = false, unique = true)
+    @Column(name = "userPseudo", nullable = false)
     private String userPseudo;
 
     @Column(name = "userPassword", nullable = false)
     private String userPassword;
 
-    @Column(name = "userEmail", nullable = false, unique = true)
+    @Column(name = "userEmail", nullable = false)
     private String userEmail;
 
     @Column(name = "userImageUrl")

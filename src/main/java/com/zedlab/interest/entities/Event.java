@@ -9,21 +9,43 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
+@Entity(name = "Event")
+@Table(name = "event")
 public class Event implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false, updatable = false)
     private Long id;
 
-    @Column(name = "event_name") private String eventName;
+    @Column(name = "eventName", nullable = false)
+    private String eventName;
 
-    @Column(name = "event_description") private String eventDescription;
+    @Column(name = "eventDescription", nullable = false, columnDefinition = "TEXT")
+    private String eventDescription;
 
-    @Column(name = "event_location") private String eventLocation;
+    @Column(name = "eventLocation", nullable = false)
+    private String eventLocation;
 
-    @Column(name = "event_cost") private String eventCost;
+    @Column(name = "eventCost", nullable = false)
+    private Integer eventCost;
 
-    @Column(name = "event_image") private String eventImagePath;
+    @Column(name = "eventDevise", nullable = false)
+    private String eventDevise;
 
-    @Column(name = "event_date") private Date eventDate;
+    @Column(name = "eventImageUrl", nullable = false)
+    private String eventImageUrl;
+
+    @Column(name = "eventDate", nullable = false)
+    private Date eventDate;
+
+    public Event(String eventName, String eventDescription, String eventLocation, Integer eventCost, String eventDevise, String eventImageUrl, Date eventDate) {
+        this.eventName = eventName;
+        this.eventDescription = eventDescription;
+        this.eventLocation = eventLocation;
+        this.eventCost = eventCost;
+        this.eventDevise = eventDevise;
+        this.eventImageUrl = eventImageUrl;
+        this.eventDate = eventDate;
+    }
 }

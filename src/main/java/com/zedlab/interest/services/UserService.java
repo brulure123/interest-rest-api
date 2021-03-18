@@ -23,7 +23,7 @@ public class UserService {
     }
 
     public User findUserById(Long id) {
-        return this.userRepository.findUserById(id)
+        return this.userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User by id " + id + " was not found."));
     }
 
@@ -36,6 +36,6 @@ public class UserService {
     }
 
     public void deleteUser(Long id) {
-        this.userRepository.deleteUserById(id);
+        this.userRepository.deleteById(id);
     }
 }
