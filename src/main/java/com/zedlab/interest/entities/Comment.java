@@ -9,14 +9,23 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
+@Entity(name = "Comment")
+@Table(name = "comment")
 public class Comment implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", updatable = false, nullable = false)
     private Long id;
 
-    @Column(name = "comment_content") private String commentContent;
+    @Column(name = "commentContent", columnDefinition = "TEXT", nullable = false)
+    private String commentContent;
 
-    @Column(name = "comment_date") private Date dateComment;
+    @Column(name = "commentDate", nullable = false)
+    private Date commentDate;
+
+    public Comment(String commentContent, Date commentDate) {
+        this.commentContent = commentContent;
+        this.commentDate = commentDate;
+    }
 }

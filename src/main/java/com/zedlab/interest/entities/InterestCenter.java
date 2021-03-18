@@ -8,14 +8,23 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
+@Entity(name = "InterestCenter")
+@Table(
+        name = "interest_center",
+        uniqueConstraints = {
+                @UniqueConstraint(name = "center_name_unique", columnNames = "centerName")
+        }
+)
 public class InterestCenter implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false, updatable = false)
     private Long id;
 
-    @Column(name = "center_name") private String centerName;
+    @Column(name = "centerName", nullable = false)
+    private String centerName;
 
-    @Column(name = "center_description") private String centerDescription;
+    @Column(name = "centerDescription", nullable = false)
+    private String centerDescription;
 }
