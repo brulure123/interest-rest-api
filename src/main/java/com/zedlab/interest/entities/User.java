@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -41,16 +42,24 @@ public class User implements Serializable {
     @Column(name = "userWallImageUrl")
     private String userWallImageUrl;
 
-    @Column(name = "userRole", nullable = false)
-    private String userRole;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Column(name="userRole", length = 12)
+    private Set<String> roles;
 
-    public User(String userName, String userPseudo, String userPassword, String userEmail, String userImageUrl, String userWallImageUrl, String userRole) {
+    public User(
+            String userName,
+            String userPseudo,
+            String userPassword,
+            String userEmail,
+            String userImageUrl,
+            String userWallImageUrl,
+            Set<String> roles) {
         this.userName = userName;
         this.userPseudo = userPseudo;
         this.userPassword = userPassword;
         this.userEmail = userEmail;
         this.userImageUrl = userImageUrl;
         this.userWallImageUrl = userWallImageUrl;
-        this.userRole = userRole;
+        this.roles = roles;
     }
 }
