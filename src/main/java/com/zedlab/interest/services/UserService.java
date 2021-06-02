@@ -11,31 +11,31 @@ import java.util.List;
 @Service
 public class UserService {
 
-    private final UserRepository userRepository;
+    private final UserRepository repository;
 
     @Autowired
     public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+        repository = userRepository;
     }
 
     public List<User> findAllUsers() {
-        return this.userRepository.findAll();
+        return repository.findAll();
     }
 
     public User findUserById(Long id) {
-        return this.userRepository.findById(id)
+        return repository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User by id " + id + " was not found."));
     }
 
     public User saveUser(User user) {
-        return this.userRepository.save(user);
+        return repository.save(user);
     }
 
     public User updateUser(User user) {
-        return this.userRepository.save(user);
+        return repository.save(user);
     }
 
     public void deleteUser(Long id) {
-        this.userRepository.deleteById(id);
+        repository.deleteById(id);
     }
 }

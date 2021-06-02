@@ -1,65 +1,93 @@
 package com.zedlab.interest.entities;
 
+import com.zedlab.interest.constants.UserRole;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.Set;
+import java.util.Collection;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode()
+@ToString()
 @Entity(name = "User")
 @Table(
         name = "user",
         uniqueConstraints = {
-                @UniqueConstraint(name = "user_pseudo_unique", columnNames = "userPseudo"),
-                @UniqueConstraint(name = "user_email_unique", columnNames = "userEmail")
+                @UniqueConstraint(name = "user_username_unique", columnNames = "username"),
+                @UniqueConstraint(name = "user_email_unique", columnNames = "email"),
         }
 )
-public class User implements Serializable {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false, updatable = false)
+    @Column(nullable = false, updatable = false)
     private Long id;
 
-    @Column(name = "userName", nullable = false)
-    private String userName;
+    @Column(nullable = false)
+    private String email;
+    private String imageUrl;
+    private String wallImageUrl;
 
-    @Column(name = "userPseudo", nullable = false)
-    private String userPseudo;
+    //-------------------------------------------------------------
+    // Definition of obligatory fields provided by Spring Security |
+    //-------------------------------------------------------------
+    @Column(nullable = false)
+    private String username;
 
-    @Column(name = "userPassword", nullable = false)
-    private String userPassword;
+    @Column(nullable = false)
+    private String password;
 
-    @Column(name = "userEmail", nullable = false)
-    private String userEmail;
+    @Column(nullable = false)
+    private boolean isAccountNonExpired;
 
-    @Column(name = "userImageUrl")
-    private String userImageUrl;
+    @Column(nullable = false)
+    private boolean isAccountNonLocked;
 
-    @Column(name = "userWallImageUrl")
-    private String userWallImageUrl;
+    @Column(nullable = false)
+    private boolean isCredentialsNonExpired;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Column(name="userRole", length = 12)
-    private Set<String> roles;
+    @Column(nullable = false)
+    private boolean isEnabled;
 
-    public User(
-            String userName,
-            String userPseudo,
-            String userPassword,
-            String userEmail,
-            String userImageUrl,
-            String userWallImageUrl,
-            Set<String> roles) {
-        this.userName = userName;
-        this.userPseudo = userPseudo;
-        this.userPassword = userPassword;
-        this.userEmail = userEmail;
-        this.userImageUrl = userImageUrl;
-        this.userWallImageUrl = userWallImageUrl;
-        this.roles = roles;
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
+
+    public User(String email,
+                String imageUrl,
+                String wallImageUrl,
+                String username,
+                String password,
+                boolean isAccountNonExpired,
+                boolean isAccountNonLocked,
+                boolean isCredentialsNonExpired,
+                boolean isEnabled,
+                UserRole role) {
+
+        this.email = email;
+        this.imageUrl = imageUrl;
+        this.wallImageUrl = wallImageUrl;
+        this.username = username;
+        this.password = password;
+        this.isAccountNonExpired = isAccountNonExpired;
+        this.isAccountNonLocked = isAccountNonLocked;
+        this.isCredentialsNonExpired = isCredentialsNonExpired;
+        this.isEnabled = isEnabled;
+        this.role = role;
+    }
+
+    /**
+     * Recuperation a Collection of GrantedAuthorities that is save as an
+     * array of String in the database.
+     * @return java.util.Collection
+     */
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return role.getGrantedAuthorities();
     }
 }
